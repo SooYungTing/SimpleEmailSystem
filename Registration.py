@@ -3,9 +3,13 @@ from tkinter import messagebox
 import os
 
 def check_email(email):
-    with open("emails.txt", "r") as file:
-        emails = file.readlines()
-    return any([email == e.strip() for e in emails])
+    with open("users.txt", "r") as file:
+        lines = file.readlines()
+    for line in lines:
+        user_info = line.strip().split(",")
+        if user_info[5] == email:
+            return True
+    return False
 
 def register_account():
     email = email_entry.get()
@@ -29,10 +33,7 @@ def register_account():
         messagebox.showerror("Error", "Passwords do not match!")
         return
 
-    with open("emails.txt", "w") as file:
-        file.write(email + "\n")
-
-    with open(f"{email}.txt", "w") as file:
+    with open("users.txt", "a") as file:
         file.write(f"{first_name},{last_name},{dob},{gender},{phone},{email},{password}\n")
 
     messagebox.showinfo("Info", "Account registered!")
