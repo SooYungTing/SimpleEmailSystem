@@ -12,28 +12,47 @@ def login():
     for user in users:
         user_data = user.strip().split(",")
         if user_data[5] == email and user_data[6] == password:
-            messagebox.showinfo("Info", "Login successful!")
-            app.quit()
+            messagebox.showinfo("Info", "Sign in successful!")
+            root.destroy()
+            import inbox
+            inbox.show_inbox(user_data[0], email)
             return
 
+    email_entry.delete(0, tk.END)
+    password_entry.delete(0, tk.END)
+    email_entry.config(highlightbackground="red", highlightthickness=2)
+    password_entry.config(highlightbackground="red", highlightthickness=2)
     messagebox.showerror("Error", "Invalid email or password!")
 
-app = tk.Tk()
-app.title("Login")
-app.geometry("300x150")
 
-email_label = tk.Label(app, text="Email:")
-password_label = tk.Label(app, text="Password:")
+def open_registration():
+    root.destroy()
+    import Registration
 
-email_entry = tk.Entry(app, width=30)
-password_entry = tk.Entry(app, show="*")
 
-login_button = tk.Button(app, text="Login", command=login)
+root = tk.Tk()
+root.title("Login")
+root.geometry("1000x1000")
 
-email_label.grid(row=0, column=0, padx=5, pady=5)
-email_entry.grid(row=0, column=1, padx=5, pady=5)
-password_label.grid(row=1, column=0, padx=5, pady=5)
-password_entry.grid(row=1, column=1, padx=5, pady=5)
-login_button.grid(row=2, column=1, pady=(10, 0))
+email_label = tk.Label(root, text="Email:", font=("Times New Roman", 15, "bold"))
+password_label = tk.Label(root, text="Password:", font=("Times New Roman", 15, "bold"))
 
-app.mainloop()
+email_entry = tk.Entry(root, width=30)
+password_entry = tk.Entry(root, show="*", width=30)
+
+login_button = tk.Button(root, text="Sign in", font=("Times New Roman", 15), command=login)
+create_button = tk.Button(root, text="Sign up", font=("Times New Roman", 15),command=open_registration)
+
+# calculate the center of the window
+x = (root.winfo_screenwidth() - root.winfo_reqwidth()) / 2
+y = (root.winfo_screenheight() - root.winfo_reqheight()) / 2
+
+# place the widgets in the center of the window
+email_label.place(relx=0.5, rely=0.35, anchor=tk.CENTER)
+email_entry.place(relx=0.5, rely=0.4, anchor=tk.CENTER)
+password_label.place(relx=0.5, rely=0.45, anchor=tk.CENTER)
+password_entry.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+login_button.place(relx=0.5, rely=0.6, anchor=tk.CENTER)
+create_button.place(relx=0.5, rely=0.7, anchor=tk.CENTER)
+
+root.mainloop()
