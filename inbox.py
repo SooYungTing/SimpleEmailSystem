@@ -55,6 +55,7 @@ def show_inbox(logged_in_email):
 
 def logout():
     root.destroy()
+    import Login
 
 
 def compose():
