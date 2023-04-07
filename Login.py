@@ -2,7 +2,13 @@ import tkinter as tk
 from tkinter import messagebox
 import os
 
+# Define email_entry and password_entry as global variables
+email_entry = None
+password_entry = None
+
 def login():
+    global email_entry, password_entry
+
     email = email_entry.get()
     password = password_entry.get()
 
@@ -17,11 +23,8 @@ def login():
             messagebox.showinfo("Info", "Sign in successful!")
             root.destroy()
             import inbox
-            inbox.show_inbox(user_data[0], email)
-            return
 
-    email_entry.delete(0, tk.END)
-    password_entry.delete(0, tk.END)
+
     email_entry.config(highlightbackground="red", highlightthickness=2)
     password_entry.config(highlightbackground="red", highlightthickness=2)
     messagebox.showerror("Error", "Invalid email or password!")
