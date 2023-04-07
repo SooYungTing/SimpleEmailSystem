@@ -12,6 +12,8 @@ def login():
     for user in users:
         user_data = user.strip().split(",")
         if user_data[5] == email and user_data[6] == password:
+            with open("login.txt", "w") as file:
+                file.write(email)
             messagebox.showinfo("Info", "Sign in successful!")
             root.destroy()
             import inbox

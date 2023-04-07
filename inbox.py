@@ -1,87 +1,74 @@
 import tkinter as tk
 import os
-from datetime import datetime
 
-
-
-def display_emails(logged_in_email):
-    emails_listbox.delete(0, tk.END)
-    try:
-        with open(f"{logged_in_email}.txt", "r") as file:
-            lines = file.readlines()
-            emails = []
-            for i in range(0, len(lines), 5):
-                email_parts = lines[i:i + 5]
-                email = {
-                    "From": email_parts[0].strip()[6:],
-                    "To": email_parts[1].strip()[4:],
-                    "Subject": email_parts[3].strip(),
-                    "Message": email_parts[4].strip(),
-                    "Date": datetime.strptime(email_parts[2].strip()[6:], '%Y-%m-%d %H:%M:%S.%f')
-                }
-                emails.append(email)
-            emails = sorted(emails, key=lambda x: x["Date"], reverse=True)
-            for email in emails:
-                if email["To"] == logged_in_email:
-                    emails_listbox.insert(tk.END, f"From: {email['From']}")
-                    emails_listbox.insert(tk.END, f"Subject: {email['Subject']}")
-                    emails_listbox.insert(tk.END, f"Date: {email['Date'].strftime('%b %d, %Y %I:%M %p')}")
-                    emails_listbox.insert(tk.END, "")
-    except FileNotFoundError:
-        print("No emails found.")
-
-
-def open_email(event):
-    selection = emails_listbox.curselection()
-    if selection:
-        selected_email = emails_listbox.get(selection)
-        email_window = tk.Toplevel(root)
-        email_window.title("Email")
-        email_window.geometry("500x500")
-        email_text = tk.Text(email_window)
-        email_text.pack()
-        email_text.insert(tk.END, selected_email)
-
-
-def show_inbox(logged_in_email):
-    global from_email
-    from_email = logged_in_email
-    inbox_file = f"{from_email}.txt"
-    if not os.path.exists(inbox_file):
-        with open(inbox_file, "w") as file:
-            pass
-    display_emails(from_email)
-
-
-def logout():
-    root.destroy()
-    import Login
-
-
-def compose():
-    import email
-    email.send_email(from_email)
-
-
+# create a GUI window
 root = tk.Tk()
-root.title("Inbox")
+root.title("My Mailbox")
 root.geometry("1000x1000")
 
-emails_label = tk.Label(root, text="Inbox", font=("Helvetica", 20))
-emails_listbox = tk.Listbox(root, width=60, font=("Helvetica", 12), bg="white", fg="black")
-scrollbar = tk.Scrollbar(root, command=emails_listbox.yview)
-emails_listbox.config(yscrollcommand=scrollbar.set)
+# read the login information from a text file
+with open("login.txt", "r") as file:
+    login_info = file.read().splitlines()
 
-show_inbox("example@gmail.com")
-emails_listbox.bind("<<ListboxSelect>>", open_email)
+# read the emails from a text file
+with open("emails.txt", "r") as file:
+    emails = file.read().splitlines()
 
-send_button = tk.Button(root, text="Compose", font=("Helvetica", 12), command=compose)
-logout_button = tk.Button(root, text="Logout", font=("Helvetica", 12), command=logout)
+def search_email():
+    # get the search query from the entry widget
+    search_query = search_entry.get()
 
-emails_label.pack(pady=10)
-emails_listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)
-scrollbar.pack(side=tk.LEFT, fill=tk.Y, pady=10)
-logout_button.pack(side=tk.BOTTOM, pady=10)
-send_button.pack(side=tk.BOTTOM, pady=20)
+    # clear the listbox
+    listbox.delete(0, tk.END)
 
+    # iterate over each email and search for the query in all fields
+    for email in emails:
+        fields = email.split(",")
+        for field in fields:
+            if search_query.lower() in field.lower():
+                listbox.insert(tk.END, email)
+                break
+
+def sign_out():
+    os.remove("login.txt")
+    root.destroy()
+
+# filter the emails that have the "to" field equal to the current login information
+filtered_emails = []
+for email in emails:
+    fields = email.split(",")
+    if len(fields) >= 2 and fields[1] == login_info[0]:
+        filtered_emails.append(email)
+
+# create a frame for the search bar and button
+search_frame = tk.Frame(root)
+search_frame.pack(side=tk.TOP, fill=tk.X)
+
+# create an entry widget for the search bar
+search_entry = tk.Entry(search_frame, width=50)
+search_entry.pack(side=tk.LEFT, padx=10)
+
+# create a search button
+search_button = tk.Button(search_frame, text="Search", command=search_email)
+search_button.pack(side=tk.LEFT, padx=10)
+
+# create a compose email button
+compose_button = tk.Button(root, text="Compose", command=lambda: exec(open("email.py").read()))
+compose_button.pack(side=tk.TOP, padx=10, pady=10, anchor="nw")
+
+# create a sign out button
+sign_out_button = tk.Button(root, text="Sign Out", command=sign_out)
+sign_out_button.pack(side=tk.BOTTOM, padx=10, pady=10, anchor="se")
+
+
+# create a listbox to display the emails
+listbox = tk.Listbox(root, width=80)
+listbox.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+
+# add the filtered emails to the listbox
+for email in filtered_emails:
+    listbox.insert(tk.END, email)
+
+
+# start the GUI main loop
 root.mainloop()
