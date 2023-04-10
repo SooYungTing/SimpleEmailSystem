@@ -59,7 +59,8 @@ message_label = tk.Label(app, text="Message:")
 sender_entry = tk.Entry(app, width=30)
 recipient_entry = tk.Entry(app, width=30)
 subject_entry = tk.Entry(app, width=30)
-message_text = tk.Text(app, height=10)
+message_text = tk.Text(app, height=30, borderwidth=2, relief=tk.SOLID)
+
 
 send_button = tk.Button(app, text="Send Email", command=send_email)
 attach_button = tk.Button(app, text="Attach File", command=attach_file)
@@ -72,8 +73,8 @@ subject_label.grid(row=2, column=0)
 subject_entry.grid(row=2, column=1)
 message_label.grid(row=3, column=0)
 message_text.grid(row=3, column=1)
-send_button.grid(row=4, column=1, pady=(10, 0))
-attach_button.grid(row=4, column=0)
+send_button.grid(row=4, column=2, pady=(10, 0))
+attach_button.grid(row=4, column=0, padx=(10, 0))
 
 email = Email(None, None, None, None, None)
 
