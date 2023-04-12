@@ -1,5 +1,6 @@
 import tkinter as tk
 import os
+import re
 
 # create a GUI window
 root = tk.Tk()
@@ -10,9 +11,11 @@ root.geometry("1000x1000")
 with open("login.txt", "r") as file:
     login_info = file.read().splitlines()
 
-# read the emails from a text file
-with open("emails.txt", "r") as file:
-    emails = file.read().splitlines()
+with open('emails.txt', 'r') as f:
+    email_data = f.read()
+
+# Split email data into individual emails
+emails = email_data.strip().split('\n\n')
 
 def search_email():
     # get the search query from the entry widget
@@ -29,16 +32,28 @@ def search_email():
                 listbox.insert(tk.END, email)
                 break
 
+
 def sign_out():
     os.remove("login.txt")
     root.destroy()
 
-# filter the emails that have the "to" field equal to the current login information
 filtered_emails = []
 for email in emails:
-    fields = email.split(",")
-    if len(fields) >= 2 and fields[1] == login_info[0]:
-        filtered_emails.append(email)
+    # Extract "To" field from email
+    to_field = re.findall('To: .*', email)
+    if len(to_field) > 0:
+        to_address = to_field[0].replace('To: ', '').strip()
+    else:
+        to_address = None
+    if to_address == login_info[0]:
+        # Extract subject field from email
+        subject_field = re.findall('Subject: .*', email)
+        if len(subject_field) > 0:
+            subject = subject_field[0].replace('Subject: ', '').strip()
+        else:
+            subject = '(no subject)'
+        filtered_emails.append(subject)
+
 
 # create a frame for the search bar and button
 search_frame = tk.Frame(root)
@@ -56,17 +71,18 @@ search_button.pack(side=tk.LEFT, padx=10)
 compose_button = tk.Button(root, text="Compose", command=lambda: exec(open("email.py").read()))
 compose_button.pack(side=tk.TOP, padx=10, pady=10, anchor="nw")
 
-# create a sign out button
+# create a sign-out button
 sign_out_button = tk.Button(root, text="Sign Out", command=sign_out)
 sign_out_button.pack(side=tk.BOTTOM, padx=10, pady=10, anchor="se")
-
 
 # create a listbox to display the emails
 listbox = tk.Listbox(root, width=80)
 listbox.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
+print("Filtered emails:", filtered_emails)
 # add the filtered emails to the listbox
 for email in filtered_emails:
+    print("Adding email to listbox:", email)
     listbox.insert(tk.END, email)
 
 
