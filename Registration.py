@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox, ttk
 import os
 
+
 def check_email(email):
     with open("users.txt", "r") as file:
         lines = file.readlines()
@@ -10,6 +11,7 @@ def check_email(email):
         if user_info[5] == email:
             return True
     return False
+
 
 def register_account():
     email = email_entry.get()
@@ -42,31 +44,45 @@ def register_account():
     messagebox.showinfo("Info", "Account registered!")
     root.quit()
 
+
 root = tk.Tk()
 root.title("Account Registration")
 root.geometry("1000x1000")
 
-email_label = tk.Label(root, text="Email:")
-password_label = tk.Label(root, text="Password:")
-confirm_password_label = tk.Label(root, text="Confirm Password:")
-dob_label = tk.Label(root, text="Date of Birth:")
-gender_label = tk.Label(root, text="Gender:")
-phone_label = tk.Label(root, text="Phone:")
-first_name_label = tk.Label(root, text="First Name:")
-last_name_label = tk.Label(root, text="Last Name:")
+# Get screen width and height
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
+
+# Calculate x and y coordinates for the Tk root window
+x = int((screen_width / 2) - (1000 / 2))
+y = int((screen_height / 2) - (1000 / 2))
+
+root.geometry(f"1000x1000+{x}+{y}")
+
+root.configure(background='#C6DEFF')
+
+email_label = tk.Label(root, text="Email:", height=20, bg="#C6DEFF")
+password_label = tk.Label(root, text="Password:", height=20, bg="#C6DEFF")
+confirm_password_label = tk.Label(root, text="Confirm Password:", height=20, bg="#C6DEFF")
+dob_label = tk.Label(root, text="Date of Birth:", height=20, bg="#C6DEFF")
+gender_label = tk.Label(root, text="Gender:", height=20, bg="#C6DEFF")
+phone_label = tk.Label(root, text="Phone:", height=20, bg="#C6DEFF")
+first_name_label = tk.Label(root, text="First Name:", height=20, bg="#C6DEFF")
+last_name_label = tk.Label(root, text="Last Name:", height=20, bg="#C6DEFF")
 
 email_entry = tk.Entry(root, width=30)
-password_entry = tk.Entry(root, show="*")
-confirm_password_entry = tk.Entry(root, show="*")
+password_entry = tk.Entry(root, show="*", width=30)
+confirm_password_entry = tk.Entry(root, show="*", width=30)
 day_var = tk.StringVar()
 month_var = tk.StringVar()
 year_var = tk.StringVar()
 day_options = list(range(1, 32))
-month_options = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+month_options = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
+                 'November', 'December']
 year_options = list(range(1900, 2023))
-day_combo = ttk.Combobox(root, textvariable=day_var, values=day_options, state='readonly', width=5)
-month_combo = ttk.Combobox(root, textvariable=month_var, values=month_options, state='readonly', width=10)
-year_combo = ttk.Combobox(root, textvariable=year_var, values=year_options, state='readonly', width=7)
+day_combo = ttk.Combobox(root, textvariable=day_var, values=day_options, state='readonly', width=5, height=20)
+month_combo = ttk.Combobox(root, textvariable=month_var, values=month_options, state='readonly', width=10, height=20)
+year_combo = ttk.Combobox(root, textvariable=year_var, values=year_options, state='readonly', width=7, height=20)
 day_var.set("Date")
 month_var.set("Month")
 year_var.set("Year")
@@ -77,26 +93,32 @@ phone_entry = tk.Entry(root, width=30)
 first_name_entry = tk.Entry(root, width=30)
 last_name_entry = tk.Entry(root, width=30)
 
-register_button = tk.Button(root, text="Register Account", command=register_account)
+register_button = tk.Button(root, text="Register Account", width=15, height=2, command=register_account)
 
-email_label.grid(row=0, column=0)
+# Center the widgets
+for i in range(8):
+    root.grid_rowconfigure(i, weight=1)
+for i in range(2):
+    root.grid_columnconfigure(i, weight=1)
+
+email_label.grid(row=0, column=0, padx=(100, 0))
 email_entry.grid(row=0, column=1)
-first_name_label.grid(row=1, column=0)
+first_name_label.grid(row=1, column=0, padx=(100, 0))
 first_name_entry.grid(row=1, column=1)
-last_name_label.grid(row=2, column=0)
+last_name_label.grid(row=2, column=0, padx=(100, 0))
 last_name_entry.grid(row=2, column=1)
-dob_label.grid(row=3, column=0, padx=(0, 10))
-day_combo.grid(row=3, column=1, padx=(0, 5), sticky="w")
-month_combo.grid(row=3, column=1, padx=(67, 5), sticky="w")
-year_combo.grid(row=3, column=1, padx=(180, 0), sticky="w")
-gender_label.grid(row=4, column=0)
+dob_label.grid(row=3, column=0, padx=(100, 0))
+day_combo.grid(row=3, column=1, padx=(165, 0), sticky="w")
+month_combo.grid(row=3, column=1, padx=(236, 0), sticky="w")
+year_combo.grid(row=3, column=1, padx=(352, 0), sticky="w")
+gender_label.grid(row=4, column=0, padx=(100, 0))
 gender_entry.grid(row=4, column=1)
-phone_label.grid(row=5, column=0)
+phone_label.grid(row=5, column=0, padx=(100, 0))
 phone_entry.grid(row=5, column=1)
-password_label.grid(row=6, column=0)
+password_label.grid(row=6, column=0, padx=(100, 0))
 password_entry.grid(row=6, column=1)
-confirm_password_label.grid(row=7, column=0)
+confirm_password_label.grid(row=7, column=0, padx=(100, 0))
 confirm_password_entry.grid(row=7, column=1)
-register_button.grid(row=8, column=1, pady=(10, 0))
+register_button.grid(row=8, column=1, padx=5, pady=5, sticky="se")
 
 root.mainloop()
