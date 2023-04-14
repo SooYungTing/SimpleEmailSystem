@@ -20,6 +20,7 @@ def login():
             messagebox.showinfo("Info", "Sign in successful!")
             root.destroy()
             import inbox
+            return
 
     email_entry.config(highlightbackground="red", highlightthickness=2)
     password_entry.config(highlightbackground="red", highlightthickness=2)
@@ -29,6 +30,7 @@ def login():
 def open_registration():
     root.destroy()
     import Registration
+
 
 
 root = tk.Tk()

@@ -3,16 +3,6 @@ from tkinter import messagebox, ttk
 import os
 
 
-def check_email(email):
-    with open("users.txt", "r") as file:
-        lines = file.readlines()
-    for line in lines:
-        user_info = line.strip().split(",")
-        if user_info[5] == email:
-            return True
-    return False
-
-
 def register_account():
     email = email_entry.get()
     password = password_entry.get()
@@ -42,7 +32,18 @@ def register_account():
         file.write(f"{first_name},{last_name},{dob},{gender},{phone},{email},{password}\n")
 
     messagebox.showinfo("Info", "Account registered!")
-    root.quit()
+    root.destroy()
+    import Login
+
+
+def check_email(email):
+    with open("users.txt", "r") as file:
+        lines = file.readlines()
+    for line in lines:
+        user_info = line.strip().split(",")
+        if user_info[5] == email:
+            return True
+    return False
 
 
 root = tk.Tk()

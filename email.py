@@ -1,5 +1,6 @@
 import tkinter as tk
-from tkinter import filedialog, messagebox
+from tkinter import filedialog
+from tkinter import messagebox
 
 
 class Email:
@@ -26,7 +27,7 @@ class Email:
 
 
 def send_email():
-    global email
+    global email, sender_entry, recipient_entry, subject_entry, message_text, Email
     sender = sender_entry.get()
     recipient = recipient_entry.get()
     subject = subject_entry.get()
@@ -37,7 +38,6 @@ def send_email():
     if not sender or not recipient or not subject or not message:
         messagebox.showwarning("Error", "Please fill in all fields.")
         return
-
     email = Email(sender, recipient, subject, message, email.attachment)
 
     if not email.attachment:
@@ -48,7 +48,6 @@ def send_email():
         file.write(formatted_email + "\n\n")
     messagebox.showinfo("Success", "Email sent successfully.")
     root.destroy()
-
 
 def attach_file():
     global email
@@ -77,7 +76,7 @@ root.configure(background='#C6DEFF')
 x = int((screen_width / 2) - (1000 / 2))
 y = int((screen_height / 2) - (1000 / 2))
 
-root.geometry(f"1000x1000+{x}+{y}")
+root.geometry(f"800x600+{x}+{y}")
 
 sender_label = tk.Label(root, text="From:", bg='#C6DEFF')
 recipient_label = tk.Label(root, text="To:", bg='#C6DEFF')
