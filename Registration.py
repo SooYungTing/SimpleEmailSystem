@@ -50,11 +50,9 @@ root = tk.Tk()
 root.title("Account Registration")
 root.geometry("1000x1000")
 
-# Get screen width and height
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 
-# Calculate x and y coordinates for the Tk root window
 x = int((screen_width / 2) - (1000 / 2))
 y = int((screen_height / 2) - (1000 / 2))
 
@@ -96,7 +94,6 @@ last_name_entry = tk.Entry(root, width=30)
 
 register_button = tk.Button(root, text="Register Account", width=15, height=2, command=register_account)
 
-# Center the widgets
 for i in range(8):
     root.grid_rowconfigure(i, weight=1)
 for i in range(2):

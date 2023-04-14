@@ -32,7 +32,6 @@ def open_registration():
     import Registration
 
 
-
 root = tk.Tk()
 root.title("Login")
 root.geometry("1000x1000")

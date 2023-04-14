@@ -65,14 +65,11 @@ root = tk.Tk()
 root.title("Email Client")
 root.geometry("800x600")
 
-# Get screen width and height
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 
 root.configure(background='#C6DEFF')
 
-
-# Calculate x and y coordinates for the Tk root window
 x = int((screen_width / 2) - (1000 / 2))
 y = int((screen_height / 2) - (1000 / 2))
 
