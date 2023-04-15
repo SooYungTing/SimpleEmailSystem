@@ -62,7 +62,7 @@ def limit_characters(text):
 
 
 root = tk.Tk()
-root.title("Email Client")
+root.title("Compose")
 root.geometry("800x600")
 
 screen_width = root.winfo_screenwidth()

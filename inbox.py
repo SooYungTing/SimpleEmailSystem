@@ -4,7 +4,7 @@ import re
 from tkinter import filedialog, messagebox
 
 root = tk.Tk()
-root.title("My Mailbox")
+root.title("Inbox")
 root.geometry("1000x1000")
 
 with open("login.txt", "r") as file:
