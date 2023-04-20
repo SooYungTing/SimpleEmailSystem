@@ -71,23 +71,6 @@ def show_email_data(event):
         email_text.insert(tk.END, email_data)
 
 
-def inbox():
-    filtered_emails = []
-    for email in emails:
-        to_field = re.findall('To: .*', email)
-        if len(to_field) > 0:
-            to_address = to_field[0].replace('To: ', '').strip()
-        else:
-            to_address = None
-        if to_address == login_info[0]:
-            subject_field = re.findall('Subject: .*', email)
-            if len(subject_field) > 0:
-                subject = subject_field[0].replace('Subject: ', '').strip()
-            else:
-                subject = '(no subject)'
-            filtered_emails.append(subject)
-
-
 filtered_emails = []
 for email in emails:
     to_field = re.findall('To: .*', email)
@@ -102,6 +85,7 @@ for email in emails:
         else:
             subject = '(no subject)'
         filtered_emails.append(subject)
+
 
 def sent_email():
     listbox.delete(0, tk.END)
@@ -159,6 +143,7 @@ for email in filtered_emails:
     listbox.insert(tk.END, email)
 
 listbox.bind("<<ListboxSelect>>", show_email_data)
+
 
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()

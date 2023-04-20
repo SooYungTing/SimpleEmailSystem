@@ -45,6 +45,10 @@ def check_email(email):
             return True
     return False
 
+def backButton():
+    root.destroy()
+    import Login
+
 
 root = tk.Tk()
 root.title("Account Registration")
@@ -60,9 +64,9 @@ root.geometry(f"1000x1000+{x}+{y}")
 
 root.configure(background='#C6DEFF')
 
-email_label = tk.Label(root, text="Email:", height=20, bg="#C6DEFF")
-password_label = tk.Label(root, text="Password:", height=20, bg="#C6DEFF")
-confirm_password_label = tk.Label(root, text="Confirm Password:", height=20, bg="#C6DEFF")
+email_label = tk.Label(root, text="Email:*", height=20, bg="#C6DEFF")
+password_label = tk.Label(root, text="Password:*", height=20, bg="#C6DEFF")
+confirm_password_label = tk.Label(root, text="Confirm Password:*", height=20, bg="#C6DEFF")
 dob_label = tk.Label(root, text="Date of Birth:", height=20, bg="#C6DEFF")
 gender_label = tk.Label(root, text="Gender:", height=20, bg="#C6DEFF")
 phone_label = tk.Label(root, text="Phone:", height=20, bg="#C6DEFF")
@@ -93,6 +97,7 @@ first_name_entry = tk.Entry(root, width=30)
 last_name_entry = tk.Entry(root, width=30)
 
 register_button = tk.Button(root, text="Register Account", width=15, height=2, command=register_account)
+back_button = tk.Button(root, text="Back", width=15, height=2, command=backButton)
 
 for i in range(8):
     root.grid_rowconfigure(i, weight=1)
@@ -118,5 +123,6 @@ password_entry.grid(row=6, column=1)
 confirm_password_label.grid(row=7, column=0, padx=(100, 0))
 confirm_password_entry.grid(row=7, column=1)
 register_button.grid(row=8, column=1, padx=5, pady=5, sticky="se")
+back_button.grid(row=8, column=0, padx=5, pady=5, sticky="sw")
 
 root.mainloop()
